@@ -62,7 +62,7 @@ with open("index.html", "w") as w:
     <body>
         <h1>Vault Demo</h1>
         <p>Gitorg: {gitorg}</p>
-        <p>Appname: {appname</p>
+        <p>Appname: {appname}</p>
         <p>DataCenter: {dc}</p>
         <p>Role_ID: {role_id}</p>
         <p>Secret_ID: {secret_id}</p>

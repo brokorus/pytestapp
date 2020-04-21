@@ -48,8 +48,12 @@ spec:
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
 		 //secret_map = httpRequest customHeaders: [[maskValue: true, name: 'X-Vault-Token', : vault_token]], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{  "metadata": "{ "dc": ${dc.input},  "gitorg": ${gitorg.input}, "appname": ${appname.input}"}"}''', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
-		 secret_map = httpRequest customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: vault_token]], httpMode: 'POST', ignoreSslErrors: true, requestBody: """{ "metadata": " "dc": "${dc.input}",  "gitorg": "${gitorg.input}", "appname": "${appname.input}"}"}""", responseHandle: 'NONE', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
+		 //secret_map = httpRequest customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: vault_token]], httpMode: 'POST', ignoreSslErrors: true, requestBody: """{ "metadata": " "dc": "${dc.input}",  "gitorg": "${gitorg.input}", "appname": "${appname.input}"}"}""", responseHandle: 'NONE', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
                  // secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: ${vault_token}" --request POST --data \'{"metadata"\\: { \\"dc\\"\\: \\"$dc\\",  \\"gitorg\\"\\: \\"$gitorg\\", \\    "appname\\"\\: \\"$appname\\"}"}\' $vault_addr/v1/auth/$gitorg/$appname/role/$dc/secret-id'
+		 httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.ZbrJdUjc5XITaVqSMamyZdCr']], ignoreSslErrors: true, requestBody: '''{
+  "metadata": "{ \\"dc\\": \\"dc1\\",  \\"gitorg\\": \\"dev1\\", \\"appname\\": \\"pytestapp\\"}"
+}
+''', responseHandle: 'NONE', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id', wrapAsMultipart: false
 		 //echo "${secret_map}"
                  }
 		}
