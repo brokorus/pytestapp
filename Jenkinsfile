@@ -40,8 +40,8 @@ spec:
    stages {
      stage('Deploy') {
          steps {
-           withCredentials([string(credentialsId: 'jenkins_token', variable: 'vault_token')]) {
              script {
+               withCredentials([string(credentialsId: 'jenkins_token', variable: 'vault_token')]) {
                  gitorg = input message: 'What is your gitorg', ok: 'Submit', parameters: [choice(choices: ['dev1', 'dev2'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
                  dc = input message: 'What is your dc', ok: 'Submit', parameters: [choice(choices: ['dc1', 'dc2'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
                  appname = input message: 'What is your appname', ok: 'Submit', parameters: [choice(choices: ['pytestapp', 'javatestapp'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
@@ -57,11 +57,10 @@ spec:
         script {
                  sh "cp \$kubeconfig /kconfig"
                  sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
+ 	  }
 	  }
-	  }
-	  }
-
+	}
      }
          }
      }
-     }}
+     }
