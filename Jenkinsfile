@@ -55,12 +55,13 @@ spec:
 }
 ''', responseHandle: 'NONE', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id', wrapAsMultipart: false
 		 //echo "${secret_map}"
+		 def json = new JsonSlurper().parseText(response.content)
                  }
 		}
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
        script {
                 sh("cp \$kubeconfig /kconfig")
-                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${response.role_id} secret_id=${response.secret_id} --wait")
+                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${json.message.role_id} secret_id=${json.message.secret_id} --wait")
  	  }
 	  }
 	}
