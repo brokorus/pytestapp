@@ -53,7 +53,7 @@ spec:
   "metadata": "{ \\"dc\\": \\"dc1\\",  \\"gitorg\\": \\"dev1\\", \\"appname\\": \\"pytestapp\\"}"
 }
 ''', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id'
-		 //echo "${secret_map}"
+		 echo "${response.content}"
 		 json = new JsonSlurper().parseText(response.content)
                  }
 		 echo "msg: ${json.message}"
