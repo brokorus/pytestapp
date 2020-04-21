@@ -51,13 +51,7 @@ spec:
 		 vault_addr = 'http://34.69.161.191'
 
                  secret_map = sh (
-		 script: """
-                   curl \
-                   --header "X-Vault-Token: ${vault_token}" \
-                   --request POST \
-                   --data '{"metadata": "{ \"dc\": \"${dc}\",  \"gitorg\": \"${gitorg}\", \"appname\": \"${appname}\"}"}' \
-                   ${vault_addr}/v1/auth/${gitorg}/${appname}/role/${dc}/secret-id
-		   """
+		 script: 'curl --header "X-Vault-Token: ${vault_token}" --request POST --data '{"metadata": "{ \"dc\": \"${dc}\",  \"gitorg\": \"${gitorg}\", \"appname\": \"${appname}\"}"}' ${vault_addr}/v1/auth/${gitorg}/${appname}/role/${dc}/secret-id'
 		 returnStdout: true
 		   )
 		 echo "${secret_map}"
