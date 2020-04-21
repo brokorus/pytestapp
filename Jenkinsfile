@@ -55,8 +55,8 @@ spec:
         container('helm') {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
         script {
-                 sh "cp \$kubeconfig /kconfig"
-                 sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
+//                sh "cp \$kubeconfig /kconfig"
+//                 sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
  	  }
 	  }
 	}
