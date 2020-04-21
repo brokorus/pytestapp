@@ -48,7 +48,7 @@ spec:
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
 		 //secret_map = httpRequest customHeaders: [[maskValue: true, name: 'X-Vault-Token', : vault_token]], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{  "metadata": "{ "dc": ${dc.input},  "gitorg": ${gitorg.input}, "appname": ${appname.input}"}"}''', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
-		 secret_map = httpRequest contentType: 'APPLICATION_JSON', customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 'abc123']], httpMode: 'POST', ignoreSslErrors: true, requestBody: """{ "metadata": " "dc": "${dc.input}",  "gitorg": "${gitorg.input}", "appname": "${appname.input}"}"}""", responseHandle: 'NONE', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
+		 secret_map = httpRequest customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 'abc123']], httpMode: 'POST', ignoreSslErrors: true, requestBody: """{ "metadata": " "dc": "${dc.input}",  "gitorg": "${gitorg.input}", "appname": "${appname.input}"}"}""", responseHandle: 'NONE', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
                  // secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: ${vault_token}" --request POST --data \'{"metadata"\\: { \\"dc\\"\\: \\"$dc\\",  \\"gitorg\\"\\: \\"$gitorg\\", \\    "appname\\"\\: \\"$appname\\"}"}\' $vault_addr/v1/auth/$gitorg/$appname/role/$dc/secret-id'
 		 //echo "${secret_map}"
                  }
