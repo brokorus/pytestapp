@@ -51,12 +51,15 @@ spec:
                  // secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: ${vault_token}" --request POST --data \'{"metadata"\\: { \\"dc\\"\\: \\"$dc\\",  \\"gitorg\\"\\: \\"$gitorg\\", \\    "appname\\"\\: \\"$appname\\"}"}\' $vault_addr/v1/auth/$gitorg/$appname/role/$dc/secret-id'
 		 echo "${secret_map}"
                  }
+		}
         container('helm') {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
         script {
                  sh "cp \$kubeconfig /kconfig"
                  sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
-	  }}}
+	  }
+	  }
+	  }
 
      }
          }
