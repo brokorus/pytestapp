@@ -57,9 +57,12 @@ spec:
 }
 ''', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id'
 		 echo "${response.content}"
-                 def config =  jsonParse("${response.content}")
+                 //def config =  jsonParse("${response.content}")
+		 def config =  jsonParse(response.content)
                  def secret_id = config["data"]["secret_id"]
                  def role_id = config["data"]["role_id"]
+		 echo "${secret_id}"
+		 echo "${role_id}"
                  }
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
                 sh("cp \$kubeconfig /kconfig")
