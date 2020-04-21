@@ -53,11 +53,12 @@ spec:
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
 		 response = httpRequest customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.PkhyTj8qto5B3G7KASZgzGiT']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{
-  "metadata": "{ \\"dc\\": \\"dc1\\",  \\"gitorg\\": \\"dev1\\", \\"appname\\": \\"pytestapp\\"}"
+  "metadata": "{ \\"dc\\": \\"${dc.input}\\",  \\"gitorg\\": \\"${gitorg.input}\\", \\"appname\\": \\"pytestapp\\"}"
 }
 ''', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id'
 		 echo "${response.content}"
-                 def config =  jsonParse(response.content)
+                 def config =  jsonParse("${response.content}")
+		 echo "${config}"
                  def mystuff = config["message"]["data"]["secret_id"]
 		 echo "${mystuff}"
 		 //json = new JsonSlurper().parseText(response.content)
