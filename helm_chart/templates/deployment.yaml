@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pytestapp.fullname" . }}
+  labels:
+    {{- include "pytestapp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "pytestapp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "pytestapp.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "pytestapp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "tylerwignw/pytestapp:0.1.2"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python3"]
+          args: ["/test.py"]
+          env:
+          - name: GITORG
+            value: {{ .Values.gitorg }}
+          - name: APPNAME
+            value: {{ .Values.appname }}
+          - name: DC
+            value: {{ .Values.dc }}
+          - name: SECRET_ID
+            value: {{ .Values.secret_id }}
+          - name: ROLE_ID
+            value: {{ .Values.role_id }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

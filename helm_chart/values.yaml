@@ -1,0 +1,26 @@
+# Default values for pytestapp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: tylerwignw/pytestapp
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+
+service:
+  type: LoadBalancer
+  port: 80
+
+gitorg: nodev
+appname: pytestapp
+dc: pytestapp
+role_id: empty
+secret_id: empty
