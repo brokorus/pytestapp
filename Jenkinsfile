@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 pipeline {
   agent {
     kubernetes {
@@ -48,7 +50,7 @@ spec:
                  appname = input message: 'What is your appname', ok: 'Submit', parameters: [choice(choices: ['pytestapp', 'javatestapp'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
-		 secret_map = httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.PkhyTj8qto5B3G7KASZgzGiT']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{
+		 def response = httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.PkhyTj8qto5B3G7KASZgzGiT']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{
   "metadata": "{ \\"dc\\": \\"dc1\\",  \\"gitorg\\": \\"dev1\\", \\"appname\\": \\"pytestapp\\"}"
 }
 ''', responseHandle: 'NONE', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id', wrapAsMultipart: false
@@ -58,7 +60,7 @@ spec:
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
        script {
                 sh("cp \$kubeconfig /kconfig")
-                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
+                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${response.role_id} secret_id=${response.secret_id} --wait")
  	  }
 	  }
 	}
