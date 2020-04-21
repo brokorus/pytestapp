@@ -1,5 +1,7 @@
 import groovy.json.JsonSlurper
-
+import groovy.json
+def json
+def response
 pipeline {
   agent {
     kubernetes {
@@ -50,12 +52,12 @@ spec:
                  appname = input message: 'What is your appname', ok: 'Submit', parameters: [choice(choices: ['pytestapp', 'javatestapp'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
-		 def response = httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.PkhyTj8qto5B3G7KASZgzGiT']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{
+		 response = httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.PkhyTj8qto5B3G7KASZgzGiT']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{
   "metadata": "{ \\"dc\\": \\"dc1\\",  \\"gitorg\\": \\"dev1\\", \\"appname\\": \\"pytestapp\\"}"
 }
 ''', responseHandle: 'NONE', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id', wrapAsMultipart: false
 		 //echo "${secret_map}"
-		 def json = new JsonSlurper().parseText(response.content)
+		 json = new JsonSlurper().parseText(response.content)
                  }
 		 echo "msg: ${json.message}"
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
