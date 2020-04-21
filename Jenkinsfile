@@ -40,6 +40,7 @@ spec:
    stages {
      stage('Deploy') {
          steps {
+        container('helm') {
              script {
                withCredentials([string(credentialsId: 'jenkins_token', variable: 'vault_token')]) {
                  gitorg = input message: 'What is your gitorg', ok: 'Submit', parameters: [choice(choices: ['dev1', 'dev2'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
@@ -50,22 +51,22 @@ spec:
 		 //secret_map = httpRequest customHeaders: [[maskValue: true, name: 'X-Vault-Token', : vault_token]], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{  "metadata": "{ "dc": ${dc.input},  "gitorg": ${gitorg.input}, "appname": ${appname.input}"}"}''', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
 		 //secret_map = httpRequest customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: vault_token]], httpMode: 'POST', ignoreSslErrors: true, requestBody: """{ "metadata": " "dc": "${dc.input}",  "gitorg": "${gitorg.input}", "appname": "${appname.input}"}"}""", responseHandle: 'NONE', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
                  // secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: ${vault_token}" --request POST --data \'{"metadata"\\: { \\"dc\\"\\: \\"$dc\\",  \\"gitorg\\"\\: \\"$gitorg\\", \\    "appname\\"\\: \\"$appname\\"}"}\' $vault_addr/v1/auth/$gitorg/$appname/role/$dc/secret-id'
-		 httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.ZbrJdUjc5XITaVqSMamyZdCr']], ignoreSslErrors: true, requestBody: '''{
+		 httpRequest consoleLogResponseBody: true, customHeaders: [[maskValue: false, name: 'X-Vault-Token', value: 's.PkhyTj8qto5B3G7KASZgzGiT']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{
   "metadata": "{ \\"dc\\": \\"dc1\\",  \\"gitorg\\": \\"dev1\\", \\"appname\\": \\"pytestapp\\"}"
 }
 ''', responseHandle: 'NONE', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id', wrapAsMultipart: false
 		 //echo "${secret_map}"
                  }
 		}
-        container('helm') {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
- //       script {
-//                sh("cp \$kubeconfig /kconfig")
-//                h("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
-// 	  }
+       script {
+                sh("cp \$kubeconfig /kconfig")
+                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
+ 	  }
 	  }
 	}
      }
          }
      }
      }
+
