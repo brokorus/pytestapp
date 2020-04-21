@@ -1,5 +1,4 @@
 import groovy.json.JsonSlurper
-import groovy.json
 def json
 def response
 pipeline {
