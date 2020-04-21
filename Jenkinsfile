@@ -40,7 +40,6 @@ spec:
    stages {
      stage('Deploy') {
          steps {
-         catchError {
          container('curl') {
            withCredentials([string(credentialsId: 'jenkins_token', variable: 'vault_token')]) {
              script {
@@ -55,7 +54,6 @@ spec:
 		 echo "${secret_map}"
                  }
         }
-     }
         container('helm') {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
         script {
