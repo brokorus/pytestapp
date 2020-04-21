@@ -64,15 +64,6 @@ spec:
 	  }}}
 
      }
-     post {
-         success {
-             echo 'Variable checks were successful'
-         }
-         failure {
-             echo 'Something went wrong'
          }
      }
      }
-           }
-  }
-}
