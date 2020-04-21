@@ -58,11 +58,12 @@ spec:
 ''', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id'
 		 echo "${response.content}"
                  def config =  jsonParse("${response.content}")
-                 def mystuff = config["data"]["secret_id"]
+                 def secret_id = config["data"]["secret_id"]
+                 def role_id = config["data"]["role_id"]
                  }
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
                 sh("cp \$kubeconfig /kconfig")
-                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${config["data"]["role_id"]} --set secret_id=${config["data"]["secret_id"]} --wait")
+                sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${role_id} --set secret_id=${secret_id} --wait")
 	  }
 		}
 	}
