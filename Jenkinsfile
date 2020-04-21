@@ -50,7 +50,7 @@ spec:
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
 
-                 secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: ${vault_token}" --request POST --data \'{"metadata"\\: "{ \\"dc\\"\\: \\"${dc}\\",  \\"gitorg\\"\\: \\"${gitorg}\\", \\    "appname\\"\\: \\"${appname}\\"}"}\' ${vault_addr}/v1/auth/${gitorg}/${appname}/role/${dc}/secret-id'
+                 secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: $vault_token" --request POST --data \'{"metadata"\\: "{ \\"dc\\"\\: \\"$dc\\",  \\"gitorg\\"\\: \\"$gitorg\\", \\    "appname\\"\\: \\"$appname\\"}"}\' $vault_addr/v1/auth/$gitorg/$appname/role/$dc/secret-id'
 		 echo "${secret_map}"
                  }
         }
