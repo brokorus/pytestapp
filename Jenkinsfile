@@ -1,4 +1,7 @@
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
+def jsonParse(def json) {
+  new groovy.json.JsonSlurperClassic().parseText(json)
+}
 pipeline {
   agent {
     kubernetes {
@@ -54,7 +57,13 @@ spec:
 }
 ''', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id'
 		 echo "${response.content}"
-		 json = new JsonSlurper().parseText(response.content)
+		 
+                 node('master') {
+                     def config =  jsonParse(response.content)
+                     def  mystuff = config["message"]["secret_id"]
+                 }
+		 echo "${mystuff}"
+		 //json = new JsonSlurper().parseText(response.content)
                  }
 		 echo "msg: ${json.message}"
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
