@@ -58,10 +58,8 @@ spec:
 ''', url: 'http://34.69.161.191/v1/auth/dev1/pytestapp/role/dc1/secret-id'
 		 echo "${response.content}"
 		 
-                 node('master') {
-                     def config =  jsonParse(response.content)
-                     def  mystuff = config["message"]["secret_id"]
-                 }
+                 def config =  jsonParse(response.content)
+                 def  mystuff = config["message"]["secret_id"]
 		 echo "${mystuff}"
 		 //json = new JsonSlurper().parseText(response.content)
                  }
