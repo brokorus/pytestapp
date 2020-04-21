@@ -47,7 +47,7 @@ spec:
                  appname = input message: 'What is your appname', ok: 'Submit', parameters: [choice(choices: ['pytestapp', 'javatestapp'], description: 'This is part of the pathing structure for Vault', name: 'input')], submitterParameter: 'merger'
                  role_id_path = ['auth', gitorg, appname, 'role', dc, 'role-id'].join('/')
 		 vault_addr = 'http://34.69.161.191'
-		 secret_map = httpRequest customHeaders: [[maskValue: true, name: 'X-Vault-Token', $vault_token: '']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{  "metadata": " "dc": $dc,  "gitorg": $gitorg, "appname": $appname}"} ''', url: "http://34.69.161.191/v1/auth/${gitorg}/${appname}/role/${dc}/secret-id", wrapAsMultipart: false
+		 secret_map = httpRequest customHeaders: [[maskValue: true, name: 'X-Vault-Token', $vault_token: '']], httpMode: 'POST', ignoreSslErrors: true, requestBody: '''{  "metadata": " "dc": ${dc.input},  "gitorg": ${gitorg.input}, "appname": ${appname.input}}"} ''', url: "http://34.69.161.191/v1/auth/${gitorg.input}/${appname.input}/role/${dc.input}/secret-id", wrapAsMultipart: false
                  // secret_map = sh label: '', returnStdout: true, script: 'curl --header "X-Vault-Token\\: $vault_token" --request POST --data \'{"metadata"\\: "{ \\"dc\\"\\: \\"$dc\\",  \\"gitorg\\"\\: \\"$gitorg\\", \\    "appname\\"\\: \\"$appname\\"}"}\' $vault_addr/v1/auth/$gitorg/$appname/role/$dc/secret-id'
 		 echo "${secret_map}"
                  }
@@ -55,7 +55,7 @@ spec:
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
         script {
                  sh "cp \$kubeconfig /kconfig"
-                 sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg} --set appname=${appname} --set dc=${dc} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
+                 sh("helm --kubeconfig /kconfig upgrade pytestapp ./helm_chart --install --set gitorg=${gitorg.input} --set appname=${appname.input} --set dc=${dc.input} --set role_id=${secret_map.role_id} secret_id=${secret_map.secret_id} --wait")
 	  }}}
 
      }
